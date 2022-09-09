@@ -39,4 +39,16 @@ Chapter 2 Create a naive trading strategy - a single trader process without supe
 ### Deps
 
 - [binance API](https://github.com/dvcrn/binance.ex)
+- [binance testnet](https://binance-docs.github.io/apidocs/spot/en/#test-new-order-trade)
+- [binance academy](https://academy.binance.com/en/articles/binance-api-series-pt-1-spot-trading-with-postman)
+- [binance create test wallet](https://academy.binance.com/en/articles/binance-dex-creating-a-wallet)
+- [binance fund test account](https://academy.binance.com/en/articles/binance-dex-funding-your-testnet-account)
 - decimal (avoid precisions issues)
+
+## Run example
+
+```elixir
+# USE TEST NET!
+iex> Naive.Trader.start_link(%{symbol: "BTCUSDT", profit_interval: "-0.01"})
+iex> Streamer.Binance.start_link("BTCUSDT")
+```

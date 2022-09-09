@@ -1,6 +1,10 @@
 defmodule Naive do
   @moduledoc """
-  Documentation for `Naive`.
+
+  Start the trader server
+
+  Naive.Trader.start_link(%{symbol: "XRPUSDT", profit_interval: "-0.01"})
+
   """
 
   alias Streamer.Binance.TradeEvent

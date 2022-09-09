@@ -2,6 +2,10 @@ defmodule Naive.Trader do
   @moduledoc """
   Trader process.
 
+  Exec
+
+  iex> Naive.Trader.start_link(%{symbol: "BTCUSDT", profit_interval: "-0.02"})
+
   # States
 
     - New trader (buyer_order_id and sell_order_id nil)
@@ -50,6 +54,7 @@ defmodule Naive.Trader do
     Logger.info("Initializing new trader for #{symbol}")
 
     tick_size = fetch_tick_size(symbol)
+    Logger.info("Tick size #{tick_size}")
 
     {
       :ok,
@@ -62,6 +67,10 @@ defmodule Naive.Trader do
   end
 
   # New trader, we will pattern match on buy_order: nil
+  # Take the first price that enter from stream `Streamer.start_streaming("xrpusdt")`
+  # And place an order
+  # iex(3)> 2022-09-09 16:07:58.404 [debug] Trade received BTCUSDT@21191.82000000
+  # 2022-09-09 16:07:58.406 [info] Placing BUY order for BTCUSDT @ 21191.82000000, quantity: 100
   def handle_cast(
         %TradeEvent{price: price},
         %State{symbol: symbol, buy_order: nil} = state
@@ -127,6 +136,7 @@ defmodule Naive.Trader do
 
   # Fallback (no previous match)
   def handle_cast(%TradeEvent{}, state) do
+
     {:noreply, false}
   end
 
@@ -148,7 +158,7 @@ defmodule Naive.Trader do
   defp fetch_tick_size(symbol) do
     Binance.get_exchange_info()
     |> elem(1)
-    |> Map.get(:symbol)
+    |> Map.get(:symbols)
     |> Enum.find(&(&1["symbol"] == symbol))
     |> Map.get("filters")
     |> Enum.find(&(&1["filterType"] == "PRICE_FILTER"))

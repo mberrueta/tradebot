@@ -6,7 +6,7 @@ defmodule Streamer.Binance do
   # usage
 
   ```shell
-  iex(3)> Streamer.Binance.start_link("xrpusdt")
+  iex(3)> Streamer.Binance.start_link("BTCUSDT")
   {:ok, #PID<0.291.0>}
   Received Message - Type: :text -- Message: "{"e":"trade","E":1662712363477,"s":"XRPUSDT","t":467097955,"p":"0.35100000","q":"2955.00000000","b":4630453826,"a":4630453399,"T":1662712363477,"m":false,"M":true}"
   Received Message - Type: :text -- Message: "{"e":"trade","E":1662712363477,"s":"XRPUSDT","t":467097956,"p":"0.35100000","q":"1320.00000000","b":4630453826,"a":4630453406,"T":1662712363477,"m":false,"M":true}"
