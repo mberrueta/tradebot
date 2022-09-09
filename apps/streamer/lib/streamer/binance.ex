@@ -17,6 +17,7 @@ defmodule Streamer.Binance do
   require Logger
 
   @stream_endpoint "wss://stream.binance.com:9443/ws"
+  @testnet_endpoint "wss://testnet.binance.vision/ws"
 
   @doc """
   Connect to stream by symbol
@@ -27,7 +28,7 @@ defmodule Streamer.Binance do
     symbol = String.downcase(symbol)
 
     WebSockex.start_link(
-      "#{@stream_endpoint}/#{symbol}@trade",
+      "#{@testnet_endpoint}/#{symbol}@trade",
       __MODULE__,
       nil
     )
@@ -69,7 +70,7 @@ defmodule Streamer.Binance do
   #    {:reply, frame, state}
   #  end
 
-  defp process_event(event) do
+  defp process_event(%{"e" => trade} = event) do
     trade_event = %Streamer.Binance.TradeEvent{
       event_type: event["e"],
       event_time: event["E"],
@@ -84,5 +85,6 @@ defmodule Streamer.Binance do
     }
 
     Logger.debug("Trade received " <> "#{trade_event.symbol}@#{trade_event.price}")
+    Naive.send_event(trade_event)
   end
 end

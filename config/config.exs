@@ -13,3 +13,7 @@ config :logger, :console,
   level: :debug,
   format: "$date $time [$level] $metadata$message\n",
   metadata: [:user_id]
+
+if File.exists?('config/binance_secret.exs') do
+  import_config('binance_secret.exs')
+end
