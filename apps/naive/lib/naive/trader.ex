@@ -56,6 +56,10 @@ defmodule Naive.Trader do
     tick_size = fetch_tick_size(symbol)
     Logger.info("Tick size #{tick_size}")
 
+    Phoenix.PubSub.subscribe(
+      Streamer.PubSub, "TRADE_EVENTS:#{symbol}"
+    )
+
     {
       :ok,
       %State{
@@ -71,7 +75,7 @@ defmodule Naive.Trader do
   # And place an order
   # iex(3)> 2022-09-09 16:07:58.404 [debug] Trade received BTCUSDT@21191.82000000
   # 2022-09-09 16:07:58.406 [info] Placing BUY order for BTCUSDT @ 21191.82000000, quantity: 100
-  def handle_cast(
+  def handle_info(
         %TradeEvent{price: price},
         %State{symbol: symbol, buy_order: nil} = state
       ) do
@@ -87,7 +91,7 @@ defmodule Naive.Trader do
   end
 
   # Our buy order got filled (order_id and quantity matches)
-  def handle_cast(
+  def handle_info(
         %TradeEvent{
           buyer_order_id: order_id,
           quantity: quantity
@@ -117,7 +121,7 @@ defmodule Naive.Trader do
   end
 
   # Our buy order sell was filled (order_id and quantity matches)
-  def handle_cast(
+  def handle_info(
         %TradeEvent{
           seller_order_id: order_id,
           quantity: quantity
@@ -135,7 +139,7 @@ defmodule Naive.Trader do
   end
 
   # Fallback (no previous match)
-  def handle_cast(%TradeEvent{}, state) do
+  def handle_info(%TradeEvent{}, _) do
 
     {:noreply, false}
   end

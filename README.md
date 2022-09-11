@@ -4,7 +4,9 @@
 
 ## Apps
 
-### Streamer
+### Streamer (1)
+
+[Chapter 1](https://book.elixircryptobot.com/stream-live-cryptocurrency-prices-from-the-binance-wss.html)
 
 Chapter 1 Stream live cryptocurrency prices from the Binance WSS
 1.1 Objectives
@@ -27,9 +29,11 @@ Chapter 1 Stream live cryptocurrency prices from the Binance WSS
 
 - WebSocket To establish a connection to Binance API’s stream
 
-### Strategy
+### Strategy (2)
 
-Chapter 2 Create a naive trading strategy - a single trader process without supervision
+[Chapter 2 Create a naive trading strategy](https://book.elixircryptobot.com/create-a-naive-trading-strategy-a-single-trader-process-without-supervision.html) 
+
+a single trader process without supervision
 2.1 Objectives
 
 - create another supervised application inside the umbrella to store our trading strategy
@@ -52,3 +56,17 @@ Chapter 2 Create a naive trading strategy - a single trader process without supe
 iex> Naive.Trader.start_link(%{symbol: "BTCUSDT", profit_interval: "-0.01"})
 iex> Streamer.Binance.start_link("BTCUSDT")
 ```
+
+### PubSub (3)
+
+[Chapter 3](https://book.elixircryptobot.com/introduce-pubsub-as-a-communication-method.html)
+
+Currently `Streamer` -send_event-> Naive -GenServer.call-> Naive.Trader (single process)
+To be able to run in parallel we need to remove the GenServer call process with a single name
+Also remove the dependency between Streamer and Trader. 
+
+Streamer will broadcast and the traders will subscribe
+
+Streamer -broadcast-> PubSub -subscribe-> Trader1 
+                             -subscribe-> Trader2 
+                             -subscribe-> Trader3 
