@@ -70,3 +70,25 @@ Streamer will broadcast and the traders will subscribe
 Streamer -broadcast-> PubSub -subscribe-> Trader1 
                              -subscribe-> Trader2 
                              -subscribe-> Trader3 
+
+### Mock Binance API (4)
+
+[Chapter 4](https://book.elixircryptobot.com/mock-the-binance-api.html)
+
+Current: 
+
+Trader -oder_limit_buy->  Binance
+       -oder_limit_sell->
+
+Post: 
+
+Trader -oder_limit_buy->  Config -> Binance
+       -oder_limit_sell_/        \_> BinanceMock
+
+#### Test
+
+```elixir
+Streamer.start_streaming("BTCUSDT")
+Naive.trade("BTCUSDT", "-0.001")
+
+```

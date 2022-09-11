@@ -16,7 +16,7 @@ defmodule Streamer.Binance do
 
   require Logger
 
-#  @stream_endpoint "wss://stream.binance.com:9443/ws"
+  #  @stream_endpoint "wss://stream.binance.com:9443/ws"
   @testnet_endpoint "wss://testnet.binance.vision/ws"
 
   @doc """
@@ -87,8 +87,9 @@ defmodule Streamer.Binance do
     Logger.debug("Trade received " <> "#{trade_event.symbol}@#{trade_event.price}")
 
     Phoenix.PubSub.broadcast(
-      Streamer.PubSub, "TRADE_EVENTS:#{trade_event.symbol}", trade_event
+      Streamer.PubSub,
+      "TRADE_EVENTS:#{trade_event.symbol}",
+      trade_event
     )
-
   end
 end

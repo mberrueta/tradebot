@@ -1,3 +1,5 @@
 defmodule Naive do
-  @moduledoc false
+  def trade(symbol, profit) do
+    Naive.Trader.start_link(%{symbol: symbol, profit_interval: profit})
+  end
 end

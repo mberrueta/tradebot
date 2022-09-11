@@ -17,3 +17,6 @@ config :logger, :console,
 if File.exists?('config/binance_secret.exs') do
   import_config('binance_secret.exs')
 end
+
+config :naive,
+  binance_client: BinanceMock
